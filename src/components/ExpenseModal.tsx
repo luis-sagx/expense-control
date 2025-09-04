@@ -13,13 +13,15 @@ export default function ExpenseModal() {
         <button
           type="button"
           onClick={() => dispatch({ type: 'SHOW_MODAL' })}
+          className="group"
         >
           <PlusCircleIcon
             className="
-            w-16 h-16 text-amber-500
-            rounded-full shadow-lg
-            hover:shadow-amber-500/50 hover:shadow-2xl hover:scale-105  
-            transform transition-all duration-500 
+            w-16 h-16 text-yellow-400 bg-gradient-to-r from-slate-800 to-gray-800
+            rounded-full shadow-2xl border-2 border-yellow-400/30
+            hover:shadow-yellow-400/50 hover:shadow-2xl hover:scale-110 hover:border-yellow-400/60
+            group-hover:text-yellow-300
+            transform transition-all duration-300 
             cursor-pointer
         " 
         />
@@ -37,7 +39,7 @@ export default function ExpenseModal() {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 bg-black/40 backdrop-blur-sm" />
+            <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-xs" />
           </Transition.Child>
 
           <div className="fixed inset-0 overflow-y-auto">
@@ -51,7 +53,7 @@ export default function ExpenseModal() {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-3xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="w-full max-w-3xl transform overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 to-gray-800 backdrop-blur-2xl border border-white/20 p-8 text-left align-middle shadow-2xl transition-all">
 
                     <ExpenseForm />
 
