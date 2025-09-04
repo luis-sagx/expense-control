@@ -1,13 +1,23 @@
-
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
+import { useBudget } from '../hooks/useBudget';
 
 export default function BudgetForm() {
-  const [budget, setBudget] = useState<string>('');
+  const [budget, setBudget] = useState(0);
+  const { dispatch } = useBudget();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const isValidBudget = useMemo(() => {
+    return !isNaN(budget) || budget > 0;
+  }, [budget]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setBudget(e.target.valueAsNumber);
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (budget.trim()) {
-      alert(`Presupuesto establecido: $${parseFloat(budget).toLocaleString()}`);
+    dispatch({ type: 'ADD_BUDGET', payload: budget });
+    if (isValidBudget) {
+      alert(`Presupuesto establecido: $${budget.toLocaleString()}`);
     }
   };
 
@@ -33,10 +43,11 @@ export default function BudgetForm() {
             <input
               type="number"
               id="budget"
+              name='budget'
               value={budget}
-              onChange={(e) => setBudget(e.target.value)}
+              onChange={handleChange}
               className="block w-full pl-10 pr-4 py-4 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-yellow-400/50 focus:border-yellow-400/50 transition-all duration-300 text-lg"
-              placeholder="0.00"
+              placeholder="Define tu presupuesto"
               step="0.01"
               min="1"
               required
@@ -46,10 +57,10 @@ export default function BudgetForm() {
 
         <button
           type="submit"
-          disabled={!budget.trim()}
+          disabled={!isValidBudget}
           className="w-full bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-500 hover:to-amber-600 disabled:from-gray-600 disabled:to-gray-700 disabled:cursor-not-allowed text-slate-900 disabled:text-slate-400 font-semibold py-4 px-6 rounded-xl transition-all duration-300 hover:shadow-lg disabled:hover:shadow-none"
         >
-          {budget.trim() ? 'Establecer Presupuesto' : 'Ingresa un monto'}
+          {isValidBudget ? 'Establecer Presupuesto' : 'Ingresa un monto'}
         </button>
       </form>
     </div>
