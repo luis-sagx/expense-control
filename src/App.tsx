@@ -60,9 +60,9 @@ export default function App() {
                 
       </main>
       {isValidBudget && (
-        <article className="max-w-3xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
+        <main className="max-w-3xl mx-auto py-10">
           <ExpenseModal />
-        </article>
+        </main>
       )}
     </div>
   );
