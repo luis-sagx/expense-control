@@ -3,18 +3,52 @@ import DatePicker from 'react-date-picker';
 import { useState } from 'react';
 import 'react-calendar/dist/Calendar.css';
 import 'react-date-picker/dist/DatePicker.css';
+import type { DraftExpense } from "../types";
+import type { Value } from "react-date-picker/src/shared/types.js";
+import ErrorMessage from "./ErrorMessage";
 
-type ValuePiece = Date | null;
-type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 export default function ExpenseForm() {
-  const [date, setDate] = useState<Value>(new Date());
+  const [expense, setExpense] = useState<DraftExpense>({
+    description: '',
+    amount: 0,
+    categoryId: '',
+    date: new Date(),
+  });
+
+  const [error, setError] = useState<string>('');
+
+  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setExpense(prev => ({
+      ...prev,
+      [name]: name === 'amount' ? parseFloat(value) : value
+    }));
+  }
+
+  const handleChangeDate = (value: Value) => {
+    setExpense(prev => ({
+      ...prev,
+      date: value
+    }));
+  }
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if(Object.values(expense).includes('') || !expense.date) {
+      setError('Todos los campos son obligatorios');
+      return;
+    }
+  }
 
   return (
     <div className="mb-4">
-      <form className="space-y-6">
+      <form onSubmit={handleSubmit } className="space-y-6">
         <legend className="text-3xl font-bold text-amber-400 mb-6 text-center">Nuevo Gasto</legend>
-        
+
+        {error && <ErrorMessage>{error}</ErrorMessage>}
+
         <div className="flex flex-col space-y-3">
           <label htmlFor="description" className="font-medium text-slate-200">
             Descripción
@@ -24,6 +58,9 @@ export default function ExpenseForm() {
             id="description"
             className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-3 text-white placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-yellow-400/50 focus:border-yellow-400/50 transition-all duration-300"
             placeholder="Agrega el nombre del gasto"
+            value={expense.description}
+            onChange={handleChangeInput}
+            name="description"
           />
         </div>
         
@@ -36,6 +73,9 @@ export default function ExpenseForm() {
             id="amount"
             className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-3 text-white placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-yellow-400/50 focus:border-yellow-400/50 transition-all duration-300"
             placeholder="Agrega la cantidad del gasto. Ejm: 3000"
+            value={expense.amount}
+            onChange={handleChangeInput}
+            name="amount"
           />
         </div>
         
@@ -46,6 +86,9 @@ export default function ExpenseForm() {
           <select
             id="category"
             className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-400/50 focus:border-yellow-400/50 transition-all duration-300"
+            value={expense.categoryId}
+            onChange={handleChangeInput}
+            name="categoryId"
           >
             <option value="" className="bg-slate-800 text-slate-300">--Selecciona una categoría--</option>
             {categories.map((category) => (
@@ -61,9 +104,9 @@ export default function ExpenseForm() {
             Fecha del Gasto
           </label>
           <DatePicker
-            onChange={setDate}
-            value={date}
-            className="w-full"
+            onChange={handleChangeDate}
+            value={expense.date}
+            className="w-full p-3"
           />
         </div>
         
