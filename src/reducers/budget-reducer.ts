@@ -1,19 +1,23 @@
+import type { DraftExpense, Expense } from "../types";
 
 
 export type BudgetAction = 
 | { type: 'ADD_BUDGET'; payload: number }
 | { type: 'SHOW_MODAL' }
 | { type: 'CLOSE_MODAL' }
-| { type: 'RESET_BUDGET' };
+| { type: 'RESET_BUDGET' }
+| { type: 'ADD_EXPENSE' ; payload: DraftExpense };
 
 export type BudgetState = {
     budget: number,
     showModal: boolean
+    expenses: Expense[];
 }
 
 export const initialBudgetState: BudgetState = {
     budget: 0,
-    showModal: false
+    showModal: false,
+    expenses: []
 }
 
 export function budgetReducer(state: BudgetState, action: BudgetAction): BudgetState {
@@ -33,6 +37,13 @@ export function budgetReducer(state: BudgetState, action: BudgetAction): BudgetS
                 ...state, 
                 showModal: false 
             };
+        case 'ADD_EXPENSE':
+            return { 
+                ...state, 
+                expenses: [...state.expenses, { id: crypto.randomUUID(), ...action.payload }],
+                showModal: false
+            };
+
         case 'RESET_BUDGET':
             return { 
                 ...state, 

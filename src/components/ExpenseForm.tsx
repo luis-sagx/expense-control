@@ -6,7 +6,7 @@ import 'react-date-picker/dist/DatePicker.css';
 import type { DraftExpense } from "../types";
 import type { Value } from "react-date-picker/src/shared/types.js";
 import ErrorMessage from "./ErrorMessage";
-
+import { useBudget } from "../hooks/useBudget";
 
 export default function ExpenseForm() {
   const [expense, setExpense] = useState<DraftExpense>({
@@ -17,6 +17,7 @@ export default function ExpenseForm() {
   });
 
   const [error, setError] = useState<string>('');
+  const { dispatch } = useBudget();
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -40,6 +41,19 @@ export default function ExpenseForm() {
       setError('Todos los campos son obligatorios');
       return;
     }
+
+    //agregar nuevo gasto
+    dispatch({ type: 'ADD_EXPENSE', payload: expense });
+
+    //resetear form
+    setExpense({
+      description: '',
+      amount: 0,
+      categoryId: '',
+      date: new Date(),
+    });
+    
+    setError('');
   }
 
   return (
@@ -66,7 +80,7 @@ export default function ExpenseForm() {
         
         <div className="flex flex-col space-y-2">
           <label htmlFor="amount" className="font-medium text-slate-200">
-            Cantidad
+            Monto
           </label>
           <input
             type="number"

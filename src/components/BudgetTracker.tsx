@@ -9,7 +9,7 @@ export default function BudgetTracker() {
       <div className="flex flex-col justify-center items-center gap-8">
         <button
             type="button"
-            className="bg-amber-600 hover:bg-orange-600 text-slate-900 font-semibold py-3 px-6 rounded-xl shadow-lg transition-all duration-300 hover:scale-105"
+            className="bg-red-600 hover:bg-red-700 text-slate-100 font-semibold py-3 px-6 rounded-xl shadow-lg transition-all duration-300 cursor-pointer"
         >
             Resetear App
         </button>

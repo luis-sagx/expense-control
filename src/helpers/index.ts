@@ -4,3 +4,13 @@ export function formatCurrency(amount: number): string {
         currency: 'USD',
     });
 }
+
+// en espanol
+export function formatDate(date: Date): string {
+    return date.toLocaleDateString('es-ES', {
+        year: 'numeric',
+        month: 'long',
+        day: '2-digit',
+    });
+}
+
