@@ -1,6 +1,6 @@
 import { categories } from "../data/categories";
 import DatePicker from 'react-date-picker';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import 'react-calendar/dist/Calendar.css';
 import 'react-date-picker/dist/DatePicker.css';
 import type { DraftExpense } from "../types";
@@ -17,7 +17,14 @@ export default function ExpenseForm() {
   });
 
   const [error, setError] = useState<string>('');
-  const { dispatch } = useBudget();
+  const { dispatch, state } = useBudget();
+
+  useEffect(() => {
+    if(state.editingId) {
+      const expenseToEdit = state.expenses.filter(exp => exp.id === state.editingId)[0];
+      setExpense(expenseToEdit);
+    }
+  }, [state.editingId, state.expenses]);
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -28,9 +35,21 @@ export default function ExpenseForm() {
   }
 
   const handleChangeDate = (value: Value) => {
+    // Handle the case where value might be null or an array (range)
+    let dateValue: Date;
+    
+    if (!value) {
+      dateValue = new Date();
+    } else if (Array.isArray(value)) {
+      // If it's a range, take the first date
+      dateValue = value[0] || new Date();
+    } else {
+      dateValue = value;
+    }
+    
     setExpense(prev => ({
       ...prev,
-      date: value
+      date: dateValue
     }));
   }
 
@@ -42,8 +61,13 @@ export default function ExpenseForm() {
       return;
     }
 
-    //agregar nuevo gasto
-    dispatch({ type: 'ADD_EXPENSE', payload: expense });
+    if(state.editingId) {
+      //actualizar gasto
+      dispatch({ type: 'UPDATE_EXPENSE', payload: { id: state.editingId, ...expense } });
+    } else {
+      //agregar nuevo gasto
+      dispatch({ type: 'ADD_EXPENSE', payload: expense });
+    }
 
     //resetear form
     setExpense({
@@ -59,7 +83,7 @@ export default function ExpenseForm() {
   return (
     <div className="mb-4">
       <form onSubmit={handleSubmit } className="space-y-6">
-        <legend className="text-3xl font-bold text-amber-400 mb-6 text-center">Nuevo Gasto</legend>
+        <legend className="text-3xl font-bold text-amber-400 mb-6 text-center">{state.editingId ? 'Editar Gasto' : 'Nuevo Gasto'}</legend>
 
         {error && <ErrorMessage>{error}</ErrorMessage>}
 
@@ -127,7 +151,7 @@ export default function ExpenseForm() {
         <input 
           type="submit" 
           className="w-full bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-500 hover:to-amber-600 text-slate-900 font-semibold py-4 px-6 rounded-xl transition-all duration-300 hover:shadow-lg cursor-pointer"
-          value={'Registrar Gasto'}
+          value={state.editingId ? 'Actualizar Gasto' : 'Registrar Gasto'}
         />
       </form>
     </div>

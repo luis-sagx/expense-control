@@ -1,13 +1,13 @@
 
 type ValuePiece = Date | null;
-type Value = ValuePiece | [ValuePiece, ValuePiece];
+export type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 export type Expense = {
   id: string;
   description: string;
   amount: number;
   categoryId: string;
-  date: Value;
+  date: Date;
 };
 
 export type DraftExpense = Omit<Expense, 'id'>;

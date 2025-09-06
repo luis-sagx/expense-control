@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import BudgetForm from "./components/BudgetForm";
 import { useBudget } from "./hooks/useBudget";
 import BudgetTracker from "./components/BudgetTracker";
@@ -12,6 +12,15 @@ export default function App() {
     return state.budget > 0;
   }, [state.budget]);
 
+  useEffect(() => {
+    try {
+      localStorage.setItem('budget', state.budget.toString());
+      localStorage.setItem('expenses', JSON.stringify(state.expenses));
+    } catch (error) {
+      console.error('Error saving to localStorage:', error);
+      // Opcional: mostrar notificación al usuario
+    }
+  }, [state.budget, state.expenses]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-950 to-emerald-900 relative overflow-hidden">

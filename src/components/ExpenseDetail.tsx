@@ -11,6 +11,7 @@ import {
   TrailingActions,
 } from 'react-swipeable-list';
 import 'react-swipeable-list/dist/styles.css';
+import { useBudget } from "../hooks/useBudget"
 
 type ExpenseDetailProps = {
     expense: Expense
@@ -18,10 +19,13 @@ type ExpenseDetailProps = {
 
 export default function ExpenseDetail({ expense }: ExpenseDetailProps) {
   const categoryInfo = useMemo(() => categories.filter(cat => cat.id === expense.categoryId)[0] , [expense])
-
+  const { dispatch } = useBudget();
+  
   const leadingActions = () => (
     <LeadingActions>
-      <SwipeAction onClick={() => console.log("Edit")}>
+      <SwipeAction 
+        onClick={() => dispatch({ type: 'GET_EXPENSE_BY_ID', payload: expense.id })}
+        >
             Editar
         </SwipeAction>
         </LeadingActions>
@@ -29,13 +33,17 @@ export default function ExpenseDetail({ expense }: ExpenseDetailProps) {
 
     const trailingActions = () => (
         <TrailingActions>
-            <SwipeAction onClick={() => console.log("Delete")}>
+            <SwipeAction 
+                onClick={() => dispatch({ type: 'REMOVE_EXPENSE', payload: expense.id })}
+                destructive={true}
+            >
                 Eliminar
             </SwipeAction>
         </TrailingActions>
     );
 
   return (
+    <div className="mt-5">
     <SwipeableList>
         <SwipeableListItem
             maxSwipe={40}
@@ -53,7 +61,7 @@ export default function ExpenseDetail({ expense }: ExpenseDetailProps) {
             <div className="flex-1">
                 
                 <h3 className="text-xl my-1 font-bold text-white capitalize">{expense.description}</h3>
-                <p className="text-slate-200 text-sm">{formatDate(expense.date as Date)}</p>
+                <p className="text-slate-200 text-sm">{formatDate(expense.date)}</p>
             </div>
             <div className="flex flex-col items-end space-y-2">
                 <span className="px-1.5 py-1 bg-yellow-400/20 text-yellow-300 text-sm font-medium rounded-lg border border-yellow-400/30 whitespace-nowrap ">
@@ -66,5 +74,6 @@ export default function ExpenseDetail({ expense }: ExpenseDetailProps) {
             </div>
         </SwipeableListItem>
     </SwipeableList>
+    </div>
   )
 }
