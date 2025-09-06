@@ -53,7 +53,7 @@ export default function ExpenseModal() {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-3xl transform overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 to-gray-800 backdrop-blur-2xl border border-white/20 p-8 text-left align-middle shadow-2xl transition-all">
+                <Dialog.Panel className="w-full max-w-4xl transform overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 to-gray-800 backdrop-blur-2xl border border-white/20 p-8 text-left align-middle shadow-2xl transition-all">
 
                     <ExpenseForm />
 

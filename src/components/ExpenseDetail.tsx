@@ -43,7 +43,7 @@ export default function ExpenseDetail({ expense }: ExpenseDetailProps) {
     );
 
   return (
-    <div className="mt-5">
+    <div className="mt-3">
     <SwipeableList>
         <SwipeableListItem
             maxSwipe={40}

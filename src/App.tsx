@@ -4,7 +4,7 @@ import { useBudget } from "./hooks/useBudget";
 import BudgetTracker from "./components/BudgetTracker";
 import ExpenseModal from "./components/ExpenseModal";
 import ExpenseList from "./components/ExpenseList";
-import FileterByCategory from "./components/FilterByCategory";
+import FilterByCategory from "./components/FilterByCategory";
 
 export default function App() {
   const { state } = useBudget();
@@ -54,7 +54,7 @@ export default function App() {
         </div>
       </header>
 
-      <main className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <main className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-5 placeholder-slate-100 pt-12">
         <div className="bg-white/10 backdrop-blur-2xl rounded-3xl border border-white/20 shadow-2xl overflow-hidden">
           <div className="bg-gradient-to-r from-yellow-400/40 via-amber-400/40 to-yellow-400/40 p-8 border-b border-white/10">
             <div className="text-center">
@@ -70,9 +70,10 @@ export default function App() {
         </div>
                 
       </main>
+
       {isValidBudget && (
-        <main className="max-w-3xl mx-auto py-10">
-          <FileterByCategory />
+        <main className="max-w-4xl mx-auto py-10 md:px-6">
+          <FilterByCategory />
           <ExpenseList />
           <ExpenseModal />
         </main>
