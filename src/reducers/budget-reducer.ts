@@ -109,7 +109,8 @@ export function budgetReducer(state: BudgetState, action: BudgetAction): BudgetS
         case 'RESET_BUDGET':
             return { 
                 ...state, 
-                budget: 0 
+                budget: 0,
+                expenses: [],
             };
         default:
             return state;

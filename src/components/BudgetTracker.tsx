@@ -1,30 +1,48 @@
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import 'react-circular-progressbar/dist/styles.css';
+import { useBudget } from "../hooks/useBudget";
 import AmountDisplay from "./AmountDisplay";
 
 export default function BudgetTracker() {
+  const { state, dispatch, totalExpenses, remainingBudget } = useBudget();
+
+  const percentage = +((totalExpenses / state.budget) * 100).toFixed(2);
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
       <div className="flex justify-center">
-        <img src="/grafico.jpg" alt="Grafico de gastos" />
+        <CircularProgressbar
+          value={percentage}
+          text={`${percentage}% Gastado`}
+          styles={buildStyles({
+            pathColor: percentage > 99 ? '#ef4444' : '#eac016',
+            trailColor: "#384151",
+            textSize: '8px',
+            textColor: percentage > 99 ? "#ef4444" : "#eac016",
+            backgroundColor: 'transparent',
+          })}
+        />
       </div>
       <div className="flex flex-col justify-center items-center gap-8">
         <button
-            type="button"
-            className="bg-red-600 hover:bg-red-700 text-slate-100 font-semibold py-3 px-6 rounded-xl shadow-lg transition-all duration-300 cursor-pointer"
+          type="button"
+          className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-semibold py-3 px-6 rounded-xl shadow-lg transition-all duration-300 cursor-pointer border border-red-500/30 backdrop-blur-sm"
+          onClick={() => dispatch({ type: 'RESET_BUDGET' })}
         >
             Resetear App
         </button>
 
         <AmountDisplay 
             label="Presupuesto"
-            amount={300}
+            amount={state.budget}
         />
         <AmountDisplay 
             label="Disponible"
-            amount={200}
+            amount={remainingBudget}
         />
         <AmountDisplay 
             label="Gastado"
-            amount={100}
+            amount={totalExpenses}
         />
 
       </div>

@@ -9,6 +9,11 @@ import ErrorMessage from "./ErrorMessage";
 import { useBudget } from "../hooks/useBudget";
 
 export default function ExpenseForm() {
+
+  const [error, setError] = useState<string>('');
+  const [previousAmount, setPreviousAmount] = useState<number>(0);
+  const { dispatch, state, remainingBudget } = useBudget();
+
   const [expense, setExpense] = useState<DraftExpense>({
     description: '',
     amount: 0,
@@ -16,13 +21,12 @@ export default function ExpenseForm() {
     date: new Date(),
   });
 
-  const [error, setError] = useState<string>('');
-  const { dispatch, state } = useBudget();
 
   useEffect(() => {
     if(state.editingId) {
       const expenseToEdit = state.expenses.filter(exp => exp.id === state.editingId)[0];
       setExpense(expenseToEdit);
+      setPreviousAmount(expenseToEdit.amount);
     }
   }, [state.editingId, state.expenses]);
 
@@ -58,6 +62,11 @@ export default function ExpenseForm() {
 
     if(Object.values(expense).includes('') || !expense.date) {
       setError('Todos los campos son obligatorios');
+      return;
+    }
+
+    if ((expense.amount - previousAmount) > remainingBudget) {
+      setError('El monto excede el presupuesto disponible');
       return;
     }
 

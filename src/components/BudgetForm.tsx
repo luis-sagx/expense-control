@@ -17,7 +17,7 @@ export default function BudgetForm() {
     e.preventDefault();
     dispatch({ type: 'ADD_BUDGET', payload: budget });
     if (isValidBudget) {
-      alert(`Presupuesto establecido: $${budget.toLocaleString()}`);
+      console.log(`Presupuesto establecido: $${budget.toLocaleString()}`);
     }
   };
 
