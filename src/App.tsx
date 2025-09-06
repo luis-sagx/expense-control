@@ -72,7 +72,7 @@ export default function App() {
       </main>
 
       {isValidBudget && (
-        <main className="max-w-4xl mx-auto py-10 md:px-6">
+        <main className="max-w-4xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
           <FilterByCategory />
           <ExpenseList />
           <ExpenseModal />
