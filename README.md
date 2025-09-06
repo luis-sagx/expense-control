@@ -10,7 +10,7 @@ Una aplicación web moderna y elegante para gestionar tu presupuesto personal y 
 
 ## 🚀 Demo en Vivo
 
-[Ver Demo](https://expense-control-luis-sagx.vercel.app) - Desplegado en Vercel
+[Ver Demo](https://expense-control-theta.vercel.app/) - Desplegado en Vercel
 
 ## 📝 Descripción
 
