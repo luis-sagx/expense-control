@@ -149,9 +149,6 @@ Las contribuciones son bienvenidas. Para contribuir:
 
 Este proyecto está bajo la Licencia MIT. Consulta el archivo [LICENSE](LICENSE) para más detalles.
 
-```
-
-
 ## 👨‍💻 Autor
 
 **Luis Sagx**
